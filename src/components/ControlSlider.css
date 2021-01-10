@@ -1,18 +1,17 @@
 .control-slider {
   margin: 5px 0;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .control-slider label {
   display: block;
-  font-weight: bold;
 }
 .control-slider .control-input {
   display: flex;
 }
 
 .control-slider .value-label {
-  font-size: 11px;
+  font-size: 12px;
   width: 50px;
   height: 16px;
   line-height: 16px;

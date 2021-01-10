@@ -7,10 +7,10 @@ const ControlSlider = function (props) {
     }
 
     return (
-        <div className={'control-slider'}>
+        <div className="control-slider">
             <label>{props.controlLabel}</label>
-            <div className={'control-input'}>
-                <div className={'value-label'}>{props.modValue}</div>
+            <div className="control-input">
+                <div className="value-label">{props.modValue}</div>
                 <input
                     id="controlSlider"
                     type="range"

@@ -75,7 +75,7 @@ function App() {
             height: '60vw'
           }}
         >
-          <p>EthBlock.art P5.js boilerplate</p>
+          <h3>EthBlock.art P5.js boilerplate</h3>
           {width && height ? (
             <CustomStyle
               width={width}
