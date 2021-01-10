@@ -7,7 +7,7 @@ const ControlColorPicker = function (props) {
     }
 
     return (
-        <div class="control-color-picker" style={{}}>
+        <div className="control-color-picker">
             <label>{props.controlLabel}</label>
             <input
                 id="controlColorPicker"

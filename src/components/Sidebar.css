@@ -12,21 +12,30 @@
 
 .sidebar .toggle-button {
   position: fixed;
-  bottom: 0px;
+  top: 0px;
   right: 0px;
   display: inline-block;
   width: 20px;
   height: 20px;
   cursor: pointer;
   padding: 10px;
+  z-index: 1;
+}
+
+.sidebar .toggle-button svg {
+  fill: #ccc;
+}
+
+.sidebar .toggle-button:hover svg {
+  fill: #fff;
 }
 
 .sidebar.hidden .toggle-button {
   transform: rotate(180deg);
 }
 
-.sidebar .toggle-button:hover svg {
-  fill: #0000ff
+.sidebar.hidden .toggle-button svg {
+  fill: #000;
 }
 
 .sidebar .section-header {
