@@ -26,11 +26,11 @@ function App() {
   const defaultMods = [
     { id: `mod1`, value: 0.75 },
     { id: `mod2`, value: 0.25 },
-    { id: `mod3`, value: 0.25 },
-    { id: `mod4`, value: 0.25 },
+    // { id: `mod3`, value: 0.25 },
+    // { id: `mod4`, value: 0.25 },
     { id: `color1`, value: `#ff0000` },
-    { id: `color2`, value: `#00ff00` },
-    { id: `color3`, value: `#0000ff` }
+    // { id: `color2`, value: `#00ff00` },
+    // { id: `color3`, value: `#0000ff` }
   ]
 
   const [blockNumber, setBlockNumber] = useState(defaultBlockNumber);
