@@ -28,9 +28,9 @@ const Sidebar = function (props) {
   }
 
   return (
-    <div className={`sidebar`}>
-      <div className={`section-header`}>Change Block</div>
-      <div className={`section-body`}>
+    <div className="sidebar">
+      <div className="section-header">Change Block</div>
+      <div className="section-body">
         <ControlSlider
           modValue={props.blockNumber}
           modValueMin="1"
@@ -40,8 +40,8 @@ const Sidebar = function (props) {
         />
       </div>
 
-      <div className={`section-header`}>Change Style</div>
-      <div className={`section-body`}>
+      <div className="section-header">Change Style</div>
+      <div className="section-body">
         { valueModComponents(props.mods.filter(m => m.id.includes(`mod`)).sort()) }
         {<ControlColorPicker
           controlLabel="background"
@@ -49,6 +49,17 @@ const Sidebar = function (props) {
           onChange={(e) => { props.handleBackgroundChange(e) }}
         />}
         { colorModComponents(props.mods.filter(m => m.id.includes(`color`)).sort()) }
+      </div>
+
+      <div className="section-header">Custom Attributes</div>
+      <div className="section-body">
+        {props.customAttribs.attributes ?
+          props.customAttribs.attributes.map( (attribute, index) => {
+            return <div className="customAttribute">
+              <div className="content-header">{attribute.trait_type}</div>
+              <div>{attribute.value}</div>
+            </div>
+          }) : ''}
       </div>
     </div>
   );

@@ -50,6 +50,12 @@ function App() {
   }
 
 
+  const [customAttribs, setCustomAttribs] = useState([]);
+  function setAttribs(attributes) {
+    setCustomAttribs(attributes)
+  }
+
+
   const canvasRef = useRef();
   const attributesRef = useRef();
   const { ref, width, height } = useDimensions({});
@@ -80,6 +86,7 @@ function App() {
               handleResize={_onCanvasResize}
               background={backgroundColor}
               { ..._modsAsAttributes() }
+              attribsCallback={setAttribs}
             />
           ) : null}
         </div>
@@ -89,6 +96,7 @@ function App() {
         blocks={blocks}
         blockNumber={blockNumber}
         mods={mods}
+        customAttribs={customAttribs}
         backgroundColor={backgroundColor}
         handleBlockChange={(e) => setBlockNumber(e) }
         handleBackgroundChange={(e) => setBackgroundColor(e) }
