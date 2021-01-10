@@ -64,7 +64,7 @@ function App() {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
       <div style={{ flexGrow: 1 }}>
         <div
           ref={ref}

@@ -47,8 +47,8 @@ const Sidebar = function (props) {
       <div className="section-header">Custom Attributes</div>
       <div className="section-body">
         {props.customAttribs.attributes ?
-          props.customAttribs.attributes.map( (attribute, index) => {
-            return <div className="customAttribute">
+          props.customAttribs.attributes.map( (attribute) => {
+            return <div className="custom-attribute">
               <div className="content-header">{attribute.trait_type}</div>
               <div>{attribute.value}</div>
             </div>

@@ -42,6 +42,10 @@
   padding: 20px;
 }
 
+.sidebar .custom-attribute {
+  margin-bottom: 15px
+}
+
 .sidebar .content-header {
   display: block;
   font-weight: bold;
