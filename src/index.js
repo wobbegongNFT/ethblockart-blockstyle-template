@@ -37,12 +37,12 @@ function App() {
   const [backgroundColor, setBackgroundColor] = useState(defaultBackgroundColor);
   const [mods, setMods] = useState(defaultMods)
 
-  const _onModChange = (modsSetFunction, id, val) => {
-    defaultMods.find(m => m.id === id).value = val
-    modsSetFunction(defaultMods)
+  const onModChange = (modsSetFunction, id, val) => {
+    mods.find(m => m.id === id).value = val
+    modsSetFunction([...mods])
   }
 
-  const _modsAsAttributes = () => {
+  const modsAsAttributes = () => {
     return mods.reduce((acc, m) => {
       acc[m.id] = m.value
       return acc
@@ -85,7 +85,7 @@ function App() {
               attributesRef={attributesRef}
               handleResize={_onCanvasResize}
               background={backgroundColor}
-              { ..._modsAsAttributes() }
+              { ...modsAsAttributes() }
               attribsCallback={setAttribs}
             />
           ) : null}
@@ -100,7 +100,7 @@ function App() {
         backgroundColor={backgroundColor}
         handleBlockChange={(e) => setBlockNumber(e) }
         handleBackgroundChange={(e) => setBackgroundColor(e) }
-        handleModChange={(id, val) => _onModChange(setMods, id, val)}
+        handleModChange={(id, val) => onModChange(setMods, id, val)}
       />}
     </div>
   );

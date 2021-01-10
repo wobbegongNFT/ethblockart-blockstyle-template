@@ -5,24 +5,13 @@ import './Sidebar.css'
 
 const Sidebar = function (props) {
 
-  const valueModComponents = (valueMods) => {
-    return valueMods.map(vm =>
-      React.createElement(ControlSlider, {
-        key: vm.id,
-        controlLabel: vm.id,
-        modValue: vm.value,
-        onChange: (e) => props.handleModChange(vm.id, parseFloat(e))
-      })
-    )
-  }
-
-  const colorModComponents = (colorMods) => {
-    return colorMods.map(cm =>
-      React.createElement(ControlColorPicker, {
-        key: cm.id,
-        controlLabel: cm.id,
-        modValue: cm.value,
-        onChange: (e) => props.handleModChange(cm.id, e)
+  const createModComponents = (mods) => {
+    return mods.map(mod =>
+      React.createElement(mod.id.includes(`color`) ? ControlColorPicker : ControlSlider, {
+        key: mod.id,
+        controlLabel: mod.id,
+        modValue: mod.value,
+        onChange: (e) => props.handleModChange(mod.id, e)
       })
     )
   }
@@ -42,13 +31,12 @@ const Sidebar = function (props) {
 
       <div className="section-header">Change Style</div>
       <div className="section-body">
-        { valueModComponents(props.mods.filter(m => m.id.includes(`mod`)).sort()) }
+        { createModComponents(props.mods) }
         {<ControlColorPicker
           controlLabel="background"
           modValue={props.backgroundColor}
           onChange={(e) => { props.handleBackgroundChange(e) }}
         />}
-        { colorModComponents(props.mods.filter(m => m.id.includes(`color`)).sort()) }
       </div>
 
       <div className="section-header">Custom Attributes</div>

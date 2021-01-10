@@ -3,7 +3,7 @@ import './ControlSlider.css'
 
 const ControlSlider = function (props) {
     const handleModChange = event => {
-        props.onChange(event.target.value)
+        props.onChange(parseFloat(event.target.value, 10))
     }
 
     return (
