@@ -42,7 +42,6 @@ const CustomStyle = ({
   background = '#ccc',
   attribsCallback,
 }) => {
-  console.log(mod1, mod2, background, 'lal');
   const shuffleBag = useRef();
   const hoistedValue = useRef();
 

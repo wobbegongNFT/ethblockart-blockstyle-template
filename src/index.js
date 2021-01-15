@@ -31,7 +31,6 @@ function App() {
       key: k,
       value: snap[k],
       set: (v) => {
-        console.log(v, 'la');
         store.options[k] = v;
       },
     };
