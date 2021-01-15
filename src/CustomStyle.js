@@ -40,8 +40,9 @@ const CustomStyle = ({
   color2 = '#c62a88',
   color3 = '#802d57',
   background = '#ccc',
-  attribsCallback
+  attribsCallback,
 }) => {
+  console.log(mod1, mod2, background, 'lal');
   const shuffleBag = useRef();
   const hoistedValue = useRef();
 
@@ -60,7 +61,7 @@ const CustomStyle = ({
         // https://docs.opensea.io/docs/metadata-standards
         // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema
 
-       attributes: [
+        attributes: [
           {
             display_type: 'number',
             trait_type: 'your trait here number',
@@ -69,9 +70,8 @@ const CustomStyle = ({
 
           {
             trait_type: 'your trait here text',
-            value: "replace me",
+            value: 'replace me',
           },
-
         ],
       };
     };
@@ -107,11 +107,11 @@ const CustomStyle = ({
     });
 
     // example assignment of hoisted value to be used as NFT attribute later
-   hoistedValue.current = 42;
+    hoistedValue.current = 42;
 
     objs.map((dot, i) => {
       p5.stroke(color1);
-      p5.strokeWeight(1 + (mod2 * 10));
+      p5.strokeWeight(1 + mod2 * 10);
       p5.ellipse(
         200 * dot.y * 6 * M,
         100 * dot.x * 6 * M,
@@ -119,10 +119,25 @@ const CustomStyle = ({
       );
     });
 
-    attribsCallback(attributesRef.current)
+    attribsCallback(attributesRef.current);
   };
 
   return <Sketch setup={setup} draw={draw} windowResized={handleResize} />;
 };
 
 export default CustomStyle;
+
+const styleMetadata = {
+  name: '',
+  description: '',
+  image: '',
+  creator_name: '',
+  options: {
+    mod1: 0.4,
+    mod2: 0.1,
+    color1: '#fff000',
+    background: '#000000',
+  },
+};
+
+export { styleMetadata };
