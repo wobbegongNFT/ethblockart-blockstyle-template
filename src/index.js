@@ -3,28 +3,58 @@ import React, { useRef, useState } from 'react';
 import useDimensions from 'react-cool-dimensions';
 import blocks from './blocks';
 import CustomStyle from './CustomStyle';
-import ControlSlider from './components/ControlSlider';
-import ControlColorPicker from './components/ControlColorPicker';
+import Sidebar from './components/Sidebar';
 
 function App() {
   /*
   Wrapped Component required to make p5 demos compatible with EthBlock.art
-  As a creative coder, in this file you can swap between the block data provided on line 40
+  As a creative coder, in this file you can:
+    - Swap between block data by changing `defaultBlockNumber` (1, 2 or 3)
+    - Change the default background color `defaultBackgroundColor`
+    - Dynamically add mods & colors in `defaultMods`
   For the rest, you can ignore this file, check CustomStyle.js
-*/
+  */
   const defaultBlockNumber = 2;
-  const defaultMod1Value = 0.75;
-  const defaultMod2Value = 0.25;
   const defaultBackgroundColor = '#cccccc';
 
-  const [blockNumber, setBlockNumber] = useState(defaultBlockNumber);
-  const [mod1, setMod1] = useState(defaultMod1Value);
-  const [mod2, setMod2] = useState(defaultMod2Value);
-  const [backgroundColor, setBackgroundColor] = useState(defaultBackgroundColor);
+  /*
+  Add and remove value/color mods here.
+  Keep ids in line with naming convention. All lowercase.
+  Value mods should be named `mod1`, `mod2`, `mod3`, ...
+  Color mods should be named `color1`, `color2`, ...
+  */
+  const defaultMods = [
+    { id: `mod1`, value: 0.75 },
+    { id: `mod2`, value: 0.25 },
+    // { id: `mod3`, value: 0.25 },
+    // { id: `mod4`, value: 0.25 },
+    { id: `color1`, value: `#ff0000` },
+    // { id: `color2`, value: `#00ff00` },
+    // { id: `color3`, value: `#0000ff` }
+  ]
 
-  function changeModValue(modSetFunction, e) {
-    modSetFunction(e)
+  const [blockNumber, setBlockNumber] = useState(defaultBlockNumber);
+  const [backgroundColor, setBackgroundColor] = useState(defaultBackgroundColor);
+  const [mods, setMods] = useState(defaultMods)
+
+  const onModChange = (modsSetFunction, id, val) => {
+    mods.find(m => m.id === id).value = val
+    modsSetFunction([...mods])
   }
+
+  const modsAsAttributes = () => {
+    return mods.reduce((acc, m) => {
+      acc[m.id] = m.value
+      return acc
+    }, {})
+  }
+
+
+  const [customAttribs, setCustomAttribs] = useState([]);
+  function setAttribs(attributes) {
+    setCustomAttribs(attributes)
+  }
+
 
   const canvasRef = useRef();
   const attributesRef = useRef();
@@ -34,7 +64,7 @@ function App() {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
       <div style={{ flexGrow: 1 }}>
         <div
           ref={ref}
@@ -45,7 +75,7 @@ function App() {
             height: '60vw'
           }}
         >
-          <p>EthBlock.art P5.js boilerplate</p>
+          <h3>EthBlock.art P5.js boilerplate</h3>
           {width && height ? (
             <CustomStyle
               width={width}
@@ -55,50 +85,23 @@ function App() {
               attributesRef={attributesRef}
               handleResize={_onCanvasResize}
               background={backgroundColor}
-              mod1={mod1}
-              mod2={mod2}
+              { ...modsAsAttributes() }
+              attribsCallback={setAttribs}
             />
           ) : null}
         </div>
       </div>
 
-      <div
-        style={{
-          width: '200px',
-          borderLeft: '#e0e0e0 1px solid',
-          backgroundColor: '#fff'
-        }}
-      >
-        <div style={{ height: '40px', background: '#000', color: '#fff', lineHeight: '40px', textAlign: 'center' }}>Change Block</div>
-        <div style={{ padding: '20px' }}>
-          <ControlSlider
-            modValue={blockNumber}
-            modValueMin="1"
-            modValueMax={blocks.length}
-            modValueStep="1"
-            onChange={(e) => { changeModValue(setBlockNumber, e) }}
-          />
-        </div>
-
-        <div style={{ height: '40px', background: '#000', color: '#fff', lineHeight: '40px', textAlign: 'center' }}>Change Style</div>
-        <div style={{ padding: '20px' }}>
-          {<ControlSlider
-            controlLabel="mod1"
-            modValue={mod1}
-            onChange={(e) => { changeModValue(setMod1, e) }}
-          />}
-          {<ControlSlider
-            controlLabel="mod2"
-            modValue={mod2}
-            onChange={(e) => { changeModValue(setMod2, e) }}
-          />}
-          <ControlColorPicker
-            controlLabel="background"
-            modValue={backgroundColor}
-            onChange={(e) => { changeModValue(setBackgroundColor, e) }}
-          />
-        </div>
-      </div>
+      {<Sidebar
+        blocks={blocks}
+        blockNumber={blockNumber}
+        mods={mods}
+        customAttribs={customAttribs}
+        backgroundColor={backgroundColor}
+        handleBlockChange={(e) => setBlockNumber(e) }
+        handleBackgroundChange={(e) => setBackgroundColor(e) }
+        handleModChange={(id, val) => onModChange(setMods, id, val)}
+      />}
     </div>
   );
 }

@@ -40,6 +40,7 @@ const CustomStyle = ({
   color2 = '#c62a88',
   color3 = '#802d57',
   background = '#ccc',
+  attribsCallback
 }) => {
   const shuffleBag = useRef();
   const hoistedValue = useRef();
@@ -117,6 +118,8 @@ const CustomStyle = ({
         dot.radius * M * mod1
       );
     });
+
+    attribsCallback(attributesRef.current)
   };
 
   return <Sketch setup={setup} draw={draw} windowResized={handleResize} />;
