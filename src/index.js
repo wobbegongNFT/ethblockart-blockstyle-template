@@ -29,7 +29,7 @@ function App() {
   const mods = Object.keys(store.options).map((k) => {
     return {
       key: k,
-      value: snap[k],
+      value: snap.options[k],
       set: (v) => {
         store.options[k] = v;
       },
