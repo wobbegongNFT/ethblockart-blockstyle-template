@@ -16,7 +16,6 @@ const store = proxy({
 */
 function App() {
   const [blockNumber, setBlockNumber] = useState(1);
-  const [customAttribs, setCustomAttribs] = useState([]);
   const snap = useProxy(store);
   const canvasRef = useRef();
   const attributesRef = useRef();
@@ -29,7 +28,7 @@ function App() {
   const mods = Object.keys(store.options).map((k) => {
     return {
       key: k,
-      value: snap[k],
+      value: snap.options[k],
       set: (v) => {
         store.options[k] = v;
       },
@@ -58,21 +57,18 @@ function App() {
               attributesRef={attributesRef}
               handleResize={_onCanvasResize}
               {...snap.options}
-              attribsCallback={setCustomAttribs}
             />
           ) : null}
         </div>
       </div>
 
-      {
-        <Sidebar
-          blocks={blocks}
-          blockNumber={blockNumber}
-          customAttribs={customAttribs}
-          mods={mods}
-          handleBlockChange={(e) => setBlockNumber(e)}
-        />
-      }
+      <Sidebar
+        blocks={blocks}
+        blockNumber={blockNumber}
+        attributes={attributesRef.current || {}}
+        mods={mods}
+        handleBlockChange={(e) => setBlockNumber(e)}
+      />
     </div>
   );
 }

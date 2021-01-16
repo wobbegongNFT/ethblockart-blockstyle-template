@@ -7,27 +7,13 @@ const Sidebar = function ({
   mods,
   blockNumber,
   blocks,
-  customAttribs,
+  attributes,
   handleBlockChange,
 }) {
   const [isVisible, toggleVisibility] = useState(true);
   const handleToggleVisibility = () => {
     toggleVisibility(!isVisible);
   };
-
-  // const createModComponents = (mods) => {
-  //   return mods.map((mod) =>
-  //     React.createElement(
-  //       mod.id.includes(`color`) ? ControlColorPicker : ControlSlider,
-  //       {
-  //         key: mod.id,
-  //         controlLabel: mod.id,
-  //         modValue: mod.value,
-  //         onChange: (e) => props.handleModChange(mod.id, e),
-  //       }
-  //     )
-  //   );
-  // };
 
   return (
     <div className={`sidebar ${isVisible ? '' : 'hidden'}`}>
@@ -77,8 +63,8 @@ const Sidebar = function ({
 
       <div className="section-header">Custom Attributes</div>
       <div className="section-body">
-        {customAttribs.attributes
-          ? customAttribs.attributes.map((attribute, index) => {
+        {attributes.attributes
+          ? attributes.attributes.map((attribute, index) => {
               return (
                 <div className="custom-attribute" key={index}>
                   <div className="content-header">{attribute.trait_type}</div>
