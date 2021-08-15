@@ -16,7 +16,7 @@ const ControlSlider = function (props) {
           type="range"
           min={props.modValueMin || 0}
           max={props.modValueMax || 1}
-          defaultValue={props.modValue || 0.5}
+          value={props.modValue}
           step={props.modValueStep || 0.001}
           onChange={handleModChange}
         />
