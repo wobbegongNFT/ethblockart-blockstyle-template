@@ -1,15 +1,11 @@
-import ReactDOM from "react-dom";
-import React, { useEffect, useRef, useState } from "react";
-import useDimensions from "react-cool-dimensions";
-import blocks from "./blocks";
-import CustomStyle, { styleMetadata } from "./CustomStyle";
-import Sidebar from "./components/Sidebar";
-import { proxy, useProxy } from "valtio";
-import {
-  DAppProvider,
-  useBlockNumber,
-  useEthers,
-} from "@usedapp/core";
+import ReactDOM from 'react-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import useDimensions from 'react-cool-dimensions';
+import blocks from './blocks';
+import CustomStyle, { styleMetadata } from './CustomStyle';
+import Sidebar from './components/Sidebar';
+import { proxy, useProxy } from 'valtio';
+import { DAppProvider, useBlockNumber, useEthers } from '@usedapp/core';
 
 const store = proxy({
   ...styleMetadata,
@@ -54,7 +50,7 @@ function App() {
           ].map((_, idx) => lastBlockNumber + idx + 1);
         }
         const blocks = await Promise.all(
-          blocksToFetch.map((bn) => library._getBlock(bn, true))
+          blocksToFetch.map((bn) => library.getBlockWithTransactions(bn, true))
         );
         setLiveBlocks([...liveBlocks, ...blocks]);
         if (blockNumber === liveBlocks.length - 1) {
@@ -77,17 +73,17 @@ function App() {
       },
     };
   });
-
+  console.log(active ? liveBlocks[liveBlockNumber] : blocks[blockNumber]);
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
       <div style={{ flexGrow: 1 }}>
         <div
           ref={ref}
           style={{
-            margin: "0 auto",
-            marginTop: "64px",
-            width: "60vw",
-            height: "60vw",
+            margin: '0 auto',
+            marginTop: '64px',
+            width: '60vw',
+            height: '60vw',
           }}
         >
           <h3>EthBlock.art P5.js boilerplate</h3>
@@ -130,5 +126,5 @@ ReactDOM.render(
       <App />
     </DAppProvider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
