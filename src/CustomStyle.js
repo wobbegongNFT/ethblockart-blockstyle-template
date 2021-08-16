@@ -47,7 +47,7 @@ const CustomStyle = ({
   // setup() initializes p5 and the canvas element, can be mostly ignored in our case (check draw())
   const setup = (p5, canvasParentRef) => {
     // Keep reference of canvas element for snapshots
-    let _p5 = p5.createCanvas(width, height).parent(canvasParentRef);
+    p5.createCanvas(width, height).parent(canvasParentRef);
     canvasRef.current = p5;
 
     attributesRef.current = () => {
@@ -105,7 +105,7 @@ const CustomStyle = ({
     // example assignment of hoisted value to be used as NFT attribute later
     hoistedValue.current = 42;
 
-    objs.map((dot, i) => {
+    objs.forEach((dot, i) => {
       p5.stroke(color1);
       p5.strokeWeight(1 + mod2 * 10);
       p5.ellipse(
