@@ -26,6 +26,7 @@ function App() {
   const currentBlockNumber = useBlockNumber();
   const snap = useProxy(store);
   const canvasRef = useRef();
+  const glRef = useRef();
   const attributesRef = useRef();
   const { ref, width, height } = useDimensions({});
   const [liveBlocks, setLiveBlocks] = useState([blocks[0]]);
@@ -93,6 +94,7 @@ function App() {
               block={active ? liveBlocks[liveBlockNumber] : blocks[blockNumber]}
               height={height}
               canvasRef={canvasRef}
+              gl={glRef}
               attributesRef={attributesRef}
               handleResize={_onCanvasResize}
               {...snap.options}
