@@ -8204,4 +8204,4 @@ const blocks = [
   },
 ];
 
-export default blocks;
+export default blocks[1].transactions;
