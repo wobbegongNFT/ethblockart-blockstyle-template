@@ -21,6 +21,7 @@ const styleMetadata = {
 export { styleMetadata };
 
 const glob = {
+	init : 0,
 	glview : null,
 	coord : [0,0]
 };
@@ -81,7 +82,7 @@ function genAttributes(prog, name, en){
 
 const r_const = 3;
 
-function block_handler(prog, block){
+function block_handler(prog, block, print){
 	let s = block.hash.slice(0, 16);
 	let num = parseInt(s, 16);
 	let v1 = new MT(num+r_const).random();
@@ -113,7 +114,7 @@ function block_handler(prog, block){
  	let en = enumeration(v1);
  	glob.attributes = genAttributes(prog, name, en);
 
- 	if(prog.print){
+ 	if(print){
 	 	let _i = prog.blabel ? prog.blabel.innerHTML : '';
 	 	console.log(_i, name, rare);
 	 	console.log(glob.attributes);
@@ -157,11 +158,19 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 
 	//init
 	useEffect(() => {
-		glob.glview = new Glview(canvasRef.current, prog);
-		window.sceneprog = prog;
-		prog.print = false;
-		prog.blabel = document.querySelector('.value-label');
+		if(glob.init < 1){
+			block_handler(prog, block);
+			glob.glview = new Glview(canvasRef.current, prog);
+			window.sceneprog = prog;
+			glob.init++;
+			console.log('hi', glob.init);
+		}
+		else{
+			console.log('reinit');
+			glob.glview.reinitCanvas(canvasRef.current);
+		}
 		return ()=>{
+			console.log('bye');
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
 
@@ -170,7 +179,7 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	//block update
 	useEffect(() =>{
 
-		block_handler(prog, block);
+		block_handler(prog, block, true);
 
 	},[block]);
 
@@ -186,7 +195,8 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 			<canvas
 				width={width}
 				height={height}
-				style={{ width: '78%', height: '68.25%' }}
+				style={{ width: '100%', height: '100%' }}
+				// style={{ width: '78%', height: '68.25%' }}
 				ref={canvasRef}
 				{...props}
 			/>

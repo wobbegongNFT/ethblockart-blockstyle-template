@@ -18,54 +18,11 @@ const styleMetadata = {
     mod4: 0.5,
   },
 };
-
 export { styleMetadata };
-
-function genAttributes(prog, name, en){
-	let attr = [];
-	if(name){
-		attr.push({
-			 trait_type: 'title',
-			 value: name
-		});
-	}
-	if(prog.uniforms.tex_attr){
-		attr.push({
-			 trait_type: 'crest',
-			 value: 'circular'
-		});
-	}
-	if(prog.uniforms._oscmixm){
-		attr.push({
-			 trait_type: 'transformation',
-			 value: 'expand'
-		});
-	}
-	if(prog.uniforms.sig_attr){
-		attr.push({
-			 trait_type: 'transformation',
-			 value: 'ripple'
-		});
-	}
-	let radiance = (prog.uniforms.sat+prog.uniforms.cont)*20;
-	radiance = Math.floor(radiance*1000)*.001;
-	attr.push({
-			 trait_type: 'radiance',
-			 value: radiance
-	});
-	if(en){
-		attr.push({
-			 trait_type: en.trait,
-			 value: en.value
-		});		
-	}
-	return attr;
-}
-
 
 const glob = {
 	glview : null,
-	attributes : []
+	coord : [0,0]
 };
 
 function lerp(n, a, b){
@@ -96,6 +53,30 @@ function hash11(f){
 
 function wbool(r, w){
 	return abs(.5-r)*2. > w ? 0 : 1;
+}
+
+function genAttributes(prog, name, en){
+	let attr = [];
+	if(name){
+		attr.push({trait_type: 'title',value: name});
+	}
+	if(prog.uniforms.tex_attr){
+		attr.push({trait_type: 'crest',value: 'circular'});
+	}
+	if(prog.uniforms._oscmixm){
+		attr.push({trait_type: 'transformation',value: 'expand'
+		});
+	}
+	if(prog.uniforms.sig_attr){
+		attr.push({trait_type: 'transformation',value: 'ripple'});
+	}
+	let radiance = (prog.uniforms.sat+prog.uniforms.cont)*20;
+	radiance = Math.floor(radiance*1000)*.001;
+	attr.push({trait_type: 'radiance',value: radiance});
+	if(en){
+		attr.push({trait_type: en.trait,value: en.value});		
+	}
+	return attr;
 }
 
 const r_const = 3;
@@ -161,24 +142,10 @@ function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
 	prog.uniforms.offs_fine = 0; 
 }
 
-function addGUI(glview, parentel){
-	const gui = new dat.GUI({ autoPlace: false });
-	gui.domElement.style.position = 'absolute';
-	gui.domElement.style.display = 'inlineBlock'
-	gui.domElement.float = 'right'
-	gui.domElement.style.top = '2px'
-	gui.domElement.style.marginLeft = '68%'
-	parentel.appendChild(gui.domElement);
-	gui.__closeButton.style.visibility = "hidden";
-	glview.initGui(gui);
-}
-
 function useAttributes(ref) {
 	useEffect(() => {
 		ref.current = () => {
 			return {
-				// This is called when the final image is generated, when creator opens the Mint NFT modal.
-				// https://docs.opensea.io/docs/metadata-standards
 				attributes : glob.attributes
 		};
 	};
