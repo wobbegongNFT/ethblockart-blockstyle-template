@@ -151,38 +151,22 @@ function useAttributes(ref) {
 const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mod4, attributesRef, handleResize, ...props}) =>{
 	useAttributes(attributesRef);
 
-	//init
 	useEffect(() => {
-		if(glob.init < 1){
-			glob.prog = getProg(block_handler(prog, block));
-			glob.glview = new Glview(canvasRef.current, glob.prog);
-			window.sceneprog = glob.prog;
-			glob.init++;
-			console.log('hi', glob.init);
-		}
-		else{
-			console.log('reinit');
-			glob.glview.reinitCanvas(canvasRef.current);
-		}
+		
+		glob.prog = getProg(block_handler(prog, block));
+		glob.glview = new Glview(canvasRef.current, glob.prog);
+		window.sceneprog = glob.prog;
+	 	console.log(prog.name, prog.rare);
+ 		console.log(glob.attributes);
+
 		return ()=>{
-			console.log('bye');
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
 
-	}, [canvasRef]);
+	}, [block]);
 
-	//block update
-	useEffect(() =>{
-		// block_handler(glob.prog, block);
-	 	console.log(prog.name, prog.rare);
-	 	console.log(glob.attributes);
-	},[block]);
-
-	//mod update
 	useEffect(() =>{	
-
 		mod_handler(glob.prog, mod1, mod2, mod3, mod4);
-
 	},[mod1, mod2, mod3, mod4]);
 
 	return useMemo(() => {

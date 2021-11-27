@@ -73,7 +73,7 @@ function App() {
       },
     };
   });
-  console.log(active ? liveBlocks[liveBlockNumber] : blocks[blockNumber]);
+  // console.log(active ? liveBlocks[liveBlockNumber] : blocks[blockNumber]);
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <div style={{ flexGrow: 1 }}>
