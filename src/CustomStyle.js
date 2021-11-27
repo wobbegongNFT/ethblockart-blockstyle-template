@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Glview } from "./modules/glview.js";
-import prog from "./zemm.js";
+import prog, {getProg} from "./zemm.js";
 import MT from './mersenne.js';
 import{name_select, enumeration} from './namegen.js';
 const {min, max, abs, round, floor} = Math;
@@ -23,6 +23,7 @@ export { styleMetadata };
 const glob = {
 	init : 0,
 	glview : null,
+	prog: null,
 	coord : [0,0]
 };
 
@@ -104,21 +105,15 @@ function block_handler(prog, block, print){
     // doublemage, expand, ripple
     //99, 300, 40 per 1000
  	let weights = [.099, .3, .04];  
- 	let rare = rare_handler(prog, v1, weights, (p)=>{
+ 	prog.rare = rare_handler(prog, v1, weights, (p)=>{
  		if(p.uniforms.idx == 8 && p.uniforms.idx2 == 7 ){
  			prog.uniforms._oscmixm = 1;
  		}
  	});
-
- 	let name = name_select(v1);
+ 	prog.name = name_select(v1);
  	let en = enumeration(v1);
  	glob.attributes = genAttributes(prog, name, en);
-
- 	if(print){
-	 	let _i = prog.blabel ? prog.blabel.innerHTML : '';
-	 	console.log(_i, name, rare);
-	 	console.log(glob.attributes);
- 	}
+	return prog.uniforms;
 }
 
 function rare_handler(prog, r, weights, uniformrule){
@@ -159,9 +154,9 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	//init
 	useEffect(() => {
 		if(glob.init < 1){
-			block_handler(prog, block);
-			glob.glview = new Glview(canvasRef.current, prog);
-			window.sceneprog = prog;
+			glob.prog = getProg(block_handler(prog, block));
+			glob.glview = new Glview(canvasRef.current, glob.prog);
+			window.sceneprog = glob.prog;
 			glob.init++;
 			console.log('hi', glob.init);
 		}
@@ -178,15 +173,15 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 
 	//block update
 	useEffect(() =>{
-
-		block_handler(prog, block, true);
-
+		// block_handler(glob.prog, block);
+	 	console.log(prog.name, prog.rare);
+	 	console.log(glob.attributes);
 	},[block]);
 
 	//mod update
 	useEffect(() =>{	
 
-		mod_handler(prog, mod1, mod2, mod3, mod4);
+		mod_handler(glob.prog, mod1, mod2, mod3, mod4);
 
 	},[mod1, mod2, mod3, mod4]);
 
