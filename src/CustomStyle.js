@@ -18,13 +18,12 @@ const styleMetadata = {
     mod4: 0.5,
   },
 };
+
 export { styleMetadata };
 
 const glob = {
-	init : 0,
 	glview : null,
-	prog: null,
-	coord : [0,0]
+	prog: null
 };
 
 function lerp(n, a, b){
@@ -45,13 +44,6 @@ function piecewise(x, xs, ys) {
     }
     return ys[lo] + (ys[hi] - ys[lo]) / (xs[hi] - xs[lo]) * (x - xs[lo]);
 };
-
-function hash11(f){
-    f = fract(f * .1031);
-    f *= f + 33.33;
-    f *= f + f;
-    return fract(f);
-}
 
 function wbool(r, w){
 	return abs(.5-r)*2. > w ? 0 : 1;
@@ -103,8 +95,7 @@ function block_handler(prog, block, print){
  	prog.uniforms.cont = v2*.1;
 
     // doublemage, expand, ripple
-    //99, 300, 40 per 1000
- 	let weights = [.099, .3, .04];  
+ 	let weights = [.099, .3, .04]; // 99, 300, 40 per 1000  
  	prog.rare = rare_handler(prog, v1, weights, (p)=>{
  		if(p.uniforms.idx == 8 && p.uniforms.idx2 == 7 ){
  			prog.uniforms._oscmixm = 1;
@@ -163,7 +154,7 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
 
-	}, [block]);
+	}, [canvasRef]);
 
 	useEffect(() =>{	
 		mod_handler(glob.prog, mod1, mod2, mod3, mod4);

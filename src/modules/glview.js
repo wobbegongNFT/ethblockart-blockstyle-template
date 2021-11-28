@@ -72,6 +72,15 @@ const prog_default = {
     on: true
 };
 
+/*
+function loadTexturesPromise(gl, opt){
+	return new Promise((resolve, reject) => {
+		let t = createTextures(gl, opt, (res)=>{           	
+			resolve(t);
+		});
+    }); 
+}
+*/
 function pgm_render(time){
     this.gl.useProgram(this.programInfo.program);
     setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo); 
@@ -152,32 +161,24 @@ class GlProg{
         };
     }
 
-    reinitCtx(gl){
-        this.gl = gl;
-        this.programInfo = null;
-        this.bufferInfo = null;
-        this.req = null;
-        this.chain = (this.prog.chain && this.prog.chain.length)? [] : null;
-        this.render = this.chain ? pgm_chain_render.bind(this) : pgm_render.bind(this);
-        //prog.glprog = this;
-        this.pgm = {
-            uniforms : this.uniforms,
-            arrays : this.prog.arrays,
-            res : this.prog.res
-        };
-
-        this.init();    	
-    }
-
     init(node){
         let p_tex = this.prog.textures;
         if (!(p_tex instanceof Array)) p_tex = [p_tex];
+        let opt = {}
         for(let tex of p_tex){
-            for(let key in tex) 
-                this.uniforms[key] = createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
-                	// console.log('texture loaded');
-                }); 
+            for(let key in tex) { 
+            	opt[key] = gl_fields(this.gl, tex[key]);
+				this.uniforms[key] = createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
+              		// 
+              	}); 
+            }
         }
+        // let o_t = createTextures(this.gl, opt, (res)=>{           	
+        //     for(let key in o_t){
+		//         this.uniforms[key] = o_t[key];
+		//     }
+        // });
+
         if(this.prog.fs instanceof Array){
             this.fsprogs = [];
             for(let fs of this.prog.fs)
@@ -252,19 +253,6 @@ class Glview{
         if(!_nostart)
             this.switchPogram(this.active);
     
-    }
-
-    reinitCanvas(canvas){
-    	this.programs[this.active].stop();
-    	if(!canvas){ console.log('null canvas'); return; }
-    	let gl = canvas.getContext("webgl2", { premultipliedAlpha: false, antialias: true });
-    	this.prog.gl = gl;
-        gl.disable(gl.DEPTH_TEST);
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        this.programs[this.active].reinitCtx(this.prog.gl);
-        this.programs[this.active].start();
-
     }
 
     switchPogram(index){ 

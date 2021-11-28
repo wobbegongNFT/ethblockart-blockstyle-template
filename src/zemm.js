@@ -57,7 +57,7 @@ function getProg(u){
 	 fs: fs,
 	 textures: [{u_sampler : make_tex_options(base64.mage[u.idx])}, 
 				 {u_sampler2 : make_tex_options(base64.toa[u.idx2])}, 
-				 {u_sampler3 : make_tex_options(base64.mage[u.idr])}],
+				 {u_sampler3 : make_tex_options(base64.mage[u.idxr])}],
 	 uniforms: u,
 	 etc : tex_len
 	};
