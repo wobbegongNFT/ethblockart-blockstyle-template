@@ -164,10 +164,10 @@ class GlProg{
     init(node){
         let p_tex = this.prog.textures;
         if (!(p_tex instanceof Array)) p_tex = [p_tex];
-        let opt = {}
+        // let opt = {}
         for(let tex of p_tex){
             for(let key in tex) { 
-            	opt[key] = gl_fields(this.gl, tex[key]);
+            	// opt[key] = gl_fields(this.gl, tex[key]);
 				this.uniforms[key] = createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
               		// 
               	}); 

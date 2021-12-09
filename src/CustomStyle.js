@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useCallback } from 'react';
 import { Glview } from "./modules/glview.js";
 import prog, {getProg} from "./zemm.js";
 import MT from './mersenne.js';
@@ -23,7 +23,8 @@ export { styleMetadata };
 
 const glob = {
 	glview : null,
-	prog: null
+	prog: null,
+	init: 0
 };
 
 function lerp(n, a, b){
@@ -142,36 +143,39 @@ function useAttributes(ref) {
 const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mod4, attributesRef, handleResize, ...props}) =>{
 	useAttributes(attributesRef);
 
-	useEffect(() => {
-		
-		glob.prog = getProg(block_handler(prog, block));
-		glob.glview = new Glview(canvasRef.current, glob.prog);
-		window.sceneprog = glob.prog;
-	 	console.log(prog.name, prog.rare);
- 		console.log(glob.attributes);
+	const onRefChange = useCallback(node => {
+	    if(node != null){
+			glob.prog = getProg(block_handler(prog, block));
+			glob.glview = new Glview(node, glob.prog);
+			console.log(++glob.init);
+			console.log(prog.name, prog.rare);
+	    }
+	}, [/*canvasRef*/ block]); 
 
+	useEffect(() =>{	
+		// block_handler(glob.prog, block);
 		return ()=>{
+			console.log('stopping');
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
-
-	}, [canvasRef]);
+	},[canvasRef]);
 
 	useEffect(() =>{	
 		mod_handler(glob.prog, mod1, mod2, mod3, mod4);
 	},[mod1, mod2, mod3, mod4]);
 
-	return useMemo(() => {
+	// return useMemo(() => {
 		return(
 			<canvas
 				width={width}
 				height={height}
-				style={{ width: '100%', height: '100%' }}
-				// style={{ width: '78%', height: '68.25%' }}
-				ref={canvasRef}
+				// style={{ width: '100%', height: '100%' }}
+				style={{ width: '78%', height: '68.25%' }}
+				ref={onRefChange}
 				{...props}
 			/>
 		);
-	}, [canvasRef]);
+	// }, [canvasRef]);
 };
 
 export default Display;
