@@ -144,16 +144,16 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	useAttributes(attributesRef);
 
 	const onRefChange = useCallback(node => {
-	    if(node != null){
+	    if(node){    	
 			glob.prog = getProg(block_handler(prog, block));
 			glob.glview = new Glview(node, glob.prog);
-			console.log(++glob.init);
+			window.sceneprog = glob.prog;
+			if(glob.init++ == 0) console.log(glob.prog.vstring);
 			console.log(prog.name, prog.rare);
 	    }
-	}, [/*canvasRef*/ block]); 
+	}, [canvasRef]); 
 
 	useEffect(() =>{	
-		// block_handler(glob.prog, block);
 		return ()=>{
 			console.log('stopping');
 			if(glob.glview){glob.glview.switchPogram(-1);}
@@ -164,18 +164,18 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 		mod_handler(glob.prog, mod1, mod2, mod3, mod4);
 	},[mod1, mod2, mod3, mod4]);
 
-	// return useMemo(() => {
+	return useMemo(() => {
 		return(
 			<canvas
 				width={width}
 				height={height}
-				// style={{ width: '100%', height: '100%' }}
-				style={{ width: '78%', height: '68.25%' }}
+				style={{ width: '100%', height: '100%' }}
+				// style={{ width: '78%', height: '68.25%' }}
 				ref={onRefChange}
 				{...props}
 			/>
 		);
-	// }, [canvasRef]);
+	}, [canvasRef]);
 };
 
 export default Display;

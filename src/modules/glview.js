@@ -31,6 +31,27 @@ const def_fs = /*glsl*/`#version 300 es
         }
 `;
 
+const def_vs_1 = /*glsl*/`//#version 300 es                                           
+    attribute vec4 position;
+    attribute vec2 texcoord;
+    varying vec2 v_texcoord;
+        void main() {
+            v_texcoord = texcoord;
+            gl_Position = position;
+        }
+`;
+
+const def_fs_1 = /*glsl*/`//#version 300 es
+    precision mediump float;                      
+    uniform vec2 u_resolution;  
+    uniform vec2 u_mouse;             
+    //out vec4 fragColor;
+        void main(){
+            vec2 rg = (gl_FragCoord.xy-u_mouse*vec2(1, -1))/u_resolution;
+            gl_FragColor = vec4(rg.x, 1.0-rg.y, rg.y, 1);
+        }
+`;
+
 /*
 const frag_prog_proto = {
     fs: fs || null (default.fs),
@@ -185,7 +206,8 @@ class GlProg{
                 this.fsprogs.push( createProgramInfo(this.gl, [this.prog.vs, fs]) );        
             this.programInfo = this.fsprogs[0];
         }else{
-            this.programInfo = createProgramInfo(this.gl, [this.prog.vs, this.prog.fs]);
+        	let _fs = (this.prog.version == 1 && this.prog.fs1) ? this.prog.fs1 : this.prog.fs;
+            this.programInfo = createProgramInfo(this.gl, [this.prog.vs, _fs]);
         }
         this.bufferInfo = createBufferInfoFromArrays(this.gl, this.prog.arrays);
         this.gl.canvas.onpointermove = node ? null : (e)=>{
@@ -228,16 +250,26 @@ class Glview{
         if(!canvas){ console.log('null canvas'); return; }
         canvas.style.backgroundColor = _bkgd || "";
         canvas.style.touchAction = "none";
-        let gl = canvas.getContext("webgl2", { premultipliedAlpha: false, antialias: true });
-        /*window.sceneref = this;*/
-        
+        let gl = null, v1 = false;
+        gl = canvas.getContext("webgl2", { premultipliedAlpha: false, antialias: true });
+        if(!gl){
+        	gl = canvas.getContext("webgl", { premultipliedAlpha: false, antialias: true });
+        	v1 = true;
+        }
+        if(!gl){console.log('null gl context'); return;}
         this.prog = prog_default;
         this.prog.gl = gl;
         this.prog.res = _res || this.prog.res;
         this.prog.drawtype = gl.TRIANGLE_STRIP;
         this.prog.ctl = this; 
         this.frag_limit = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
-        
+        this.prog.version = v1? 1 : 2;
+        this.prog.vstring = gl.getParameter(gl.VERSION);
+        if(v1){
+        	this.prog.fs = def_fs_1;
+        	this.prog.vs = def_vs_1;
+    	}
+
         this.gui_ctl = {
             pgm : this.active
         }

@@ -131,7 +131,7 @@ button.onclick = (e)=>{
 	triplet(v),
 	aa_triplet(v),
 	posessive_enumerative_phrase(v)];
-	let sel =  select(v);
+	let sel = select(v);
 	for(let i = 0; i < arr.length; i++){
 		if(arr[i] == sel){
 			arr[i] += ' -'
