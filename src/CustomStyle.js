@@ -74,12 +74,10 @@ function genAttributes(prog, name, en){
 	return attr;
 }
 
-const r_const = 3;
-
 function block_handler(prog, block, print){
 	let s = block.hash.slice(0, 16);
 	let num = parseInt(s, 16);
-	let v1 = new MT(num+r_const).random();
+	let v1 = new MT(num+3).random();
 	let v2 = new MT(num*3).random();
 
 	let a = round(v1*(prog.etc.texlen_a-1));

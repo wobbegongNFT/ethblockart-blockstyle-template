@@ -74,19 +74,25 @@ function App() {
     };
   });
   // console.log(active ? liveBlocks[liveBlockNumber] : blocks[blockNumber]);
+  const dstyle = {
+    margin: '0 auto',
+    marginTop: '64px',
+    width: '60vw',
+    height: '60vw',
+  }
+  const wstyle = {
+    margin: '0 auto',
+    width: '100vw',
+    height: '100vh',
+  }
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <div style={{ flexGrow: 1 }}>
         <div
           ref={ref}
-          style={{
-            margin: '0 auto',
-            marginTop: '64px',
-            width: '60vw',
-            height: '60vw',
-          }}
+          style={dstyle}
         >
-          <h3>EthBlock.art P5.js boilerplate</h3>
+          {/*<h3>EthBlock.art P5.js boilerplate</h3>*/}
           {width && height ? (
             <CustomStyle
               width={width}
