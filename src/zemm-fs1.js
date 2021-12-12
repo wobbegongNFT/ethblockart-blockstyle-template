@@ -96,8 +96,12 @@ const fs = /*glsl*/ `
 		float mlev = mix(_mlev, rotsig, _oscmixr*_oscmixm*5.);
 
 		vec2 tuv = v_texcoord;
+		float r = u_resolution.y/u_resolution.x;
+		tuv.x /=r;
 		tuv *=(1.-zoom);
 		tuv +=.5*zoom;
+		tuv.x += 1.-r;
+		tuv.y -= (1.-r)*.4;
 
 		vec2 v = fold(uv, shift_n, _div, rot_r, _drift, _sdf); 
 
