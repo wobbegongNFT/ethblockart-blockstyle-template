@@ -19,7 +19,6 @@ const def_vs = /*glsl*/`#version 300 es
             gl_Position = position;
         }
 `;
-
 const def_fs = /*glsl*/`#version 300 es
     precision mediump float;                      
     uniform vec2 u_resolution;  
@@ -31,7 +30,8 @@ const def_fs = /*glsl*/`#version 300 es
         }
 `;
 
-const def_vs_1 = /*glsl*/`//#version 300 es                                           
+/*webgl_1 fallback*/
+const def_vs_1 = /*glsl*/`                                           
     attribute vec4 position;
     attribute vec2 texcoord;
     varying vec2 v_texcoord;
@@ -40,12 +40,11 @@ const def_vs_1 = /*glsl*/`//#version 300 es
             gl_Position = position;
         }
 `;
-
-const def_fs_1 = /*glsl*/`//#version 300 es
+const def_fs_1 = /*glsl*/`
     precision mediump float;                      
     uniform vec2 u_resolution;  
     uniform vec2 u_mouse;             
-    //out vec4 fragColor;
+    
         void main(){
             vec2 rg = (gl_FragCoord.xy-u_mouse*vec2(1, -1))/u_resolution;
             gl_FragColor = vec4(rg.x, 1.0-rg.y, rg.y, 1);
@@ -93,15 +92,6 @@ const prog_default = {
     on: true
 };
 
-/*
-function loadTexturesPromise(gl, opt){
-	return new Promise((resolve, reject) => {
-		let t = createTextures(gl, opt, (res)=>{           	
-			resolve(t);
-		});
-    }); 
-}
-*/
 function pgm_render(time){
     this.gl.useProgram(this.programInfo.program);
     setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo); 
@@ -194,20 +184,20 @@ class GlProg{
               	}); 
             }
         }
-        // let o_t = createTextures(this.gl, opt, (res)=>{           	
-        //     for(let key in o_t){
-		//         this.uniforms[key] = o_t[key];
-		//     }
-        // });
+        /*let o_t = createTextures(this.gl, opt, (res)=>{           	
+            for(let key in o_t){
+		        this.uniforms[key] = o_t[key];
+		    }
+        });*/
 
-        if(this.prog.fs instanceof Array){
+        let prog_fs = (this.prog.version == 1 && this.prog.fs1) ? this.prog.fs1 /*webgl1 fallback*/: this.prog.fs;
+        if(prog_fs instanceof Array){
             this.fsprogs = [];
-            for(let fs of this.prog.fs)
-                this.fsprogs.push( createProgramInfo(this.gl, [this.prog.vs, fs]) );        
+            for(let fs of prog_fs)
+                this.fsprogs.push(createProgramInfo(this.gl, [this.prog.vs, fs]));        
             this.programInfo = this.fsprogs[0];
         }else{
-        	let _fs = (this.prog.version == 1 && this.prog.fs1) ? this.prog.fs1 : this.prog.fs;
-            this.programInfo = createProgramInfo(this.gl, [this.prog.vs, _fs]);
+            this.programInfo = createProgramInfo(this.gl, [this.prog.vs, prog_fs]);
         }
         this.bufferInfo = createBufferInfoFromArrays(this.gl, this.prog.arrays);
         this.gl.canvas.onpointermove = node ? null : (e)=>{

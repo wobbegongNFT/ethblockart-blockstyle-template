@@ -53,21 +53,21 @@ function wbool(r, w){
 function genAttributes(prog, name, en){
 	let attr = [];
 	if(name){
-		attr.push({trait_type: 'title',value: name});
+		attr.push({trait_type: 'inscription', value: name});
 	}
 	if(prog.uniforms.tex_attr){
-		attr.push({trait_type: 'crest',value: 'circular'});
+		attr.push({trait_type: 'crest', value: 'circular'});
 	}
 	if(prog.uniforms._oscmixm){
-		attr.push({trait_type: 'transformation',value: 'expand'
+		attr.push({trait_type: 'transformation', value: 'expand'
 		});
 	}
 	if(prog.uniforms.sig_attr){
-		attr.push({trait_type: 'transformation',value: 'ripple'});
+		attr.push({trait_type: 'transformation', value: 'ripple'});
 	}
 	let radiance = (prog.uniforms.sat+prog.uniforms.cont)*20;
 	radiance = Math.floor(radiance*1000)*.001;
-	attr.push({trait_type: 'radiance',value: radiance});
+	attr.push({trait_type: 'radiance', value: radiance});
 	if(en){
 		attr.push({trait_type: en.trait,value: en.value});		
 	}
@@ -96,7 +96,8 @@ function block_handler(prog, block, print){
  	prog.uniforms.cont = v2*.1;
 
     // doublemage, expand, ripple
- 	let weights = [.099, .3, .04]; // 99, 300, 40 per 1000  
+    // 99, 300, 40 per 1000 
+ 	let weights = [.099, .3, .04];  
  	prog.rare = rare_handler(prog, v1, weights, (p)=>{
  		if(p.uniforms.idx == 8 && p.uniforms.idx2 == 7 ){
  			prog.uniforms._oscmixm = 1;
@@ -104,7 +105,7 @@ function block_handler(prog, block, print){
  	});
  	prog.name = name_select(v1);
  	let en = enumeration(v1);
- 	glob.attributes = genAttributes(prog, name, en);
+ 	glob.attributes = genAttributes(prog, prog.name, en);
 	return prog.uniforms;
 }
 
@@ -155,7 +156,7 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 
 	useEffect(() =>{	
 		return ()=>{
-			console.log('stopping');
+			// console.log('stopping');
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
 	},[canvasRef]);
