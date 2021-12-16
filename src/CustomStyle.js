@@ -142,20 +142,17 @@ function useAttributes(ref) {
 const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mod4, attributesRef, handleResize, ...props}) =>{
 	useAttributes(attributesRef);
 
-	const onRefChange = useCallback(node => {
-	    if(node){    	
+	useEffect(()=>{
+		if(canvasRef.current){
 			glob.prog = getProg(block_handler(prog, block));
-			glob.glview = new Glview(node, glob.prog);
+			glob.glview = new Glview(canvasRef.current, glob.prog);
 			window.sceneprog = glob.prog;
 			if(glob.init++ == 0) console.log(glob.prog.vstring);
-			console.log(prog.name, prog.rare);
-	    }
-	}, [canvasRef]); 
-
-	useEffect(() =>{	
+			console.log(prog.name, prog.rare);			
+		}
 		return ()=>{
-			// console.log('stopping');
-			if(glob.glview){glob.glview.switchPogram(-1);}
+		// console.log('stopping');
+		if(glob.glview){glob.glview.switchPogram(-1);}
 		}
 	},[canvasRef]);
 
@@ -170,7 +167,8 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 				height={height}
 				style={{ width: '100%', height: '100%' }}
 				// style={{ width: '78%', height: '68.25%' }}
-				ref={onRefChange}
+				// ref={onRefChange}
+				ref={canvasRef}
 				{...props}
 			/>
 		);
