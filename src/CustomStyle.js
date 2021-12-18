@@ -148,11 +148,12 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 			glob.glview = new Glview(canvasRef.current, glob.prog);
 			window.sceneprog = glob.prog;
 			if(glob.init++ == 0) console.log(glob.prog.vstring);
-			console.log(prog.name, prog.rare);			
+			console.log(prog.name, prog.rare);	
+			console.log(glob.attributes);	
 		}
 		return ()=>{
-		// console.log('stopping');
-		if(glob.glview){glob.glview.switchPogram(-1);}
+			// console.log('stopping');
+			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
 	},[canvasRef]);
 
@@ -166,8 +167,6 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 				width={width}
 				height={height}
 				style={{ width: '100%', height: '100%' }}
-				// style={{ width: '78%', height: '68.25%' }}
-				// ref={onRefChange}
 				ref={canvasRef}
 				{...props}
 			/>
