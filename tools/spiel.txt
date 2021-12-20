@@ -1,0 +1,10 @@
+Iterative shifts is an experiment with symbolic archetypes assembled by generative laws.
+
+Zemm's drawings are combined and filtered by the rules of an iterated function system.
+
+Determined by the block hash, a system of weighted choices applies parameters and rare attributes, sometimes hidden or logged in consoles. 
+
+mod1: amplitude
+mod2: speed
+mod3: fracture
+mod4: alpha mix

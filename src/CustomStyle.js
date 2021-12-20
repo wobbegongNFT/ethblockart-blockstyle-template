@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useCallback } from 'react';
-import { Glview } from "./modules/glview.js";
+import React, {useEffect, useMemo} from 'react';
+import {Glview} from "./modules/glview.js";
 import prog, {getProg} from "./zemm.js";
 import MT from './mersenne.js';
 import{name_select, enumeration} from './namegen.js';
@@ -66,10 +66,9 @@ function genAttributes(prog, name, en){
 		attr.push({trait_type: 'transformation', value: 'ripple'});
 	}
 	let radiance = (prog.uniforms.sat+prog.uniforms.cont)*20;
-	radiance = Math.floor(radiance*1000)*.001;
-	attr.push({trait_type: 'radiance', value: radiance});
+	attr.push({trait_type: 'radiance', value: radiance.toFixed(2)});
 	if(en){
-		attr.push({trait_type: en.trait,value: en.value});		
+		attr.push({trait_type: en.trait,value: en.value.toFixed(2)});		
 	}
 	return attr;
 }
@@ -77,9 +76,12 @@ function genAttributes(prog, name, en){
 function block_handler(prog, block, print){
 	let s = block.hash.slice(0, 16);
 	let num = parseInt(s, 16);
+	// let mt = new MT(num);
+	// let v1 = mt.random();
+	// let v2 = mt.random();
 	let v1 = new MT(num+3).random();
 	let v2 = new MT(num*3).random();
-
+	
 	let a = round(v1*(prog.etc.texlen_a-1));
 	let b = round(v2*(prog.etc.texlen_b-1));
 	let c = round(999*v1*v2%(prog.etc.texlen_a-1));
